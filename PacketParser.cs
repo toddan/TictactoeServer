@@ -7,7 +7,7 @@ using System.Windows.Forms;
 
 namespace TictactoeServer
 {
-    static class Protocol
+    static class PacketParser
     {
         public static string MakePackageString(Package package)
         {

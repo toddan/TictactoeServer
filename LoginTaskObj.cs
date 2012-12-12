@@ -41,7 +41,7 @@ namespace TictactoeServer
             LoginPackage = new Package();
             LoginPackage.Type = "userlist";
             LoginPackage.From = "server";
-            LoginPackage.To = "client";
+            LoginPackage.To = "all";
 
             foreach (ClientSocket cs in ClientList)
             {
@@ -50,7 +50,7 @@ namespace TictactoeServer
 
             LoginPackage.Data = Clients;
 
-            return Protocol.MakePackageString(LoginPackage); ;
+            return PacketParser.MakePackageString(LoginPackage); ;
         }
     }
 }

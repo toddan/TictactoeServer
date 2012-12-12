@@ -42,7 +42,7 @@ namespace TictactoeServer
                 {
                     string message = ClientStreamReader.ReadLine();
                     MessageBox.Show(message);
-                    HandleClientTask(Protocol.ParsePackageString(message));
+                    HandleClientTask(PacketParser.ParsePackageString(message));
                 }
             }
             catch (Exception e)
