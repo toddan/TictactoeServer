@@ -1,0 +1,9 @@
+c:\users\tord\documents\visual studio 2012\Projects\TictactoeServer\TictactoeServer\bin\Debug\TictactoeServer.exe.config
+c:\users\tord\documents\visual studio 2012\Projects\TictactoeServer\TictactoeServer\bin\Debug\TictactoeServer.exe
+c:\users\tord\documents\visual studio 2012\Projects\TictactoeServer\TictactoeServer\bin\Debug\TictactoeServer.pdb
+c:\users\tord\documents\visual studio 2012\Projects\TictactoeServer\TictactoeServer\obj\Debug\TictactoeServer.csprojResolveAssemblyReference.cache
+c:\users\tord\documents\visual studio 2012\Projects\TictactoeServer\TictactoeServer\obj\Debug\TictactoeServer.Form1.resources
+c:\users\tord\documents\visual studio 2012\Projects\TictactoeServer\TictactoeServer\obj\Debug\TictactoeServer.Properties.Resources.resources
+c:\users\tord\documents\visual studio 2012\Projects\TictactoeServer\TictactoeServer\obj\Debug\TictactoeServer.csproj.GenerateResource.Cache
+c:\users\tord\documents\visual studio 2012\Projects\TictactoeServer\TictactoeServer\obj\Debug\TictactoeServer.exe
+c:\users\tord\documents\visual studio 2012\Projects\TictactoeServer\TictactoeServer\obj\Debug\TictactoeServer.pdb
