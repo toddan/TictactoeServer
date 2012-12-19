@@ -45,6 +45,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ClientSocket.cs" />
+    <Compile Include="GamePatternTaskObj.cs" />
+    <Compile Include="NewGameTaskObj.cs" />
     <Compile Include="ITask.cs" />
     <Compile Include="LoginTaskObj.cs" />
     <Compile Include="Package.cs" />

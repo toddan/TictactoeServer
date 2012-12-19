@@ -18,7 +18,7 @@ namespace TictactoeServer
 
         private List<ClientSocket> ClientList = new List<ClientSocket>();
 
-        public string ClientInfo
+        public string ClientIp
         {
             get
             {
@@ -34,14 +34,17 @@ namespace TictactoeServer
             ClientStreamWriter = new StreamWriter(ClientStream);
         }
 
+        /// <summary>
+        /// Read the data sent by the client thru the clientSocket.
+        /// </summary>
         public void ReadSocket()
         {
             try
             {
-                for (; ; )
+                for (; ;)
                 {
                     string message = ClientStreamReader.ReadLine();
-                    MessageBox.Show(message);
+                    Console.WriteLine("server: " + message);
                     HandleClientTask(PacketParser.ParsePackageString(message));
                 }
             }
@@ -52,6 +55,11 @@ namespace TictactoeServer
             }
         }
 
+        /// <summary>
+        /// Creates a new task object for each new task the client sends
+        /// to the server. Then run the DoTask method
+        /// </summary>
+        /// <param name="package">Package sent by the client</param>
         private void HandleClientTask(Package package)
         {
             TaskFactory ServerTaskFactory = new TaskFactory();
@@ -68,6 +76,7 @@ namespace TictactoeServer
         public void EndClientSocket()
         {
             myClientSocket.Close();
+            ClientList.Remove(this);
         }
 
         public void UpdateClientList(List<ClientSocket> ServerClientList)

@@ -7,6 +7,11 @@ using System.Windows.Forms;
 
 namespace TictactoeServer
 {
+    /// <summary>
+    /// This is a fake xml parser/mapper.
+    /// It would be better to use an exsisting xml library.
+    /// But this was easier and faster than learning a new library for me. 
+    /// </summary>
     static class PacketParser
     {
         public static string MakePackageString(Package package)
