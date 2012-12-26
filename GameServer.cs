@@ -13,23 +13,38 @@ namespace TictactoeServer
     class GameServer
     {
         private TcpListener listener;
-
         private List<ClientSocket> ClientSockets = new List<ClientSocket>();
+        private Thread Serverthread;
+        private Thread ClientThread;
+        public bool IsRunning {get;set;}
 
         public GameServer(string ip, int port)
         {
+            IsRunning = false;
             listener = new TcpListener(IPAddress.Parse(ip), port);
-            listener.Start();
         }
 
         /// <summary>
-        /// Starts the main server thread that listens for new clients.
+        /// Checks if the server is running or not and
+        /// starts the server loop and server thread if there is no server running.
+        /// Make sure the thread is a background thread so it really ends when we close the application
         /// </summary>
         public void StartServer()
         {
-            Thread Serverthread = new Thread(new ThreadStart(ListenForClients));
-            Serverthread.Start();
-            Console.WriteLine("Server started");
+            if (IsRunning)
+            {
+                MessageBox.Show("The server is already online");
+            }
+            else
+            {
+                IsRunning = true;
+                listener.Start();
+                Serverthread = new Thread(new ThreadStart(ListenForClients));
+                Serverthread.IsBackground = true;
+                Serverthread.Start();
+                Console.WriteLine("Server started");
+                MessageBox.Show("Server started!");
+            }
         }
 
         /// <summary>
@@ -40,13 +55,21 @@ namespace TictactoeServer
         {
             try
             {
-                for (; ;)
+                while(IsRunning)
                 {
+                    // Check if the listener is pending so we can stop it later
+                    if (!listener.Pending())
+                    {
+                        Thread.Sleep(500);
+                        continue;
+                    }
+
                     Socket ConnectedClientSocket = listener.AcceptSocket();
                     // When the tcpListener gets a new connection inject the socket into a new ClientSocket object
                     // and start a new thread for that ClientSocket. 
                     ClientSocket client = new ClientSocket(ConnectedClientSocket);
-                    Thread ClientThread = new Thread(new ThreadStart(client.ReadSocket));
+                    ClientThread = new Thread(new ThreadStart(client.ReadSocket));
+                    ClientThread.IsBackground = true;
                     ClientThread.Start();
                     ClientSockets.Add(client);
                     // Make sure the ClientSocket has all a list of all the other connected sockets.
@@ -56,7 +79,7 @@ namespace TictactoeServer
             }
             catch (Exception e)
             {
-                Console.WriteLine("server: " + e.Message);   
+                MessageBox.Show("server: " + e.Message);   
             }
         }
 
@@ -65,6 +88,33 @@ namespace TictactoeServer
             foreach (ClientSocket cs in ClientSockets)
             {
                 cs.UpdateClientList(ClientSockets);
+            }
+        }
+
+        /// <summary>
+        /// Stops the listener and terminates the main server thread gracefully.
+        /// </summary>
+        public void StopServer()
+        {
+            if(!IsRunning)
+            {
+                MessageBox.Show("the server is not running");
+            }
+            else
+            {
+                IsRunning = false; // kill the server loop
+                listener.Stop(); // Stop the tcp listener
+                Serverthread.Join(); // Join the thread so it terminates gracefully
+
+                // Empty the ClientSockets list and close each socket, do this after the serverthread is gone to avoid deadlock
+                foreach (ClientSocket cs in ClientSockets.ToList())
+                {
+                    cs.EndClientSocket();
+                    ClientSockets.Remove(cs);
+                }
+
+                Console.WriteLine("server stopped");
+                MessageBox.Show("Server stopped!");
             }
         }
     }

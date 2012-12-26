@@ -18,6 +18,8 @@ namespace TictactoeServer
 
         private List<ClientSocket> ClientList = new List<ClientSocket>();
 
+        private bool IsRunning = false;
+
         public string ClientIp
         {
             get
@@ -39,9 +41,10 @@ namespace TictactoeServer
         /// </summary>
         public void ReadSocket()
         {
+            IsRunning = true;
             try
             {
-                for (; ;)
+                while(IsRunning)
                 {
                     string message = ClientStreamReader.ReadLine();
                     Console.WriteLine("server: " + message);
@@ -50,7 +53,7 @@ namespace TictactoeServer
             }
             catch (Exception e)
             {
-                System.Windows.Forms.MessageBox.Show(e.Message);
+                // If anything bad happends or the client dissconnects, kill and remove the socket
                 EndClientSocket();
             }
         }
@@ -75,6 +78,7 @@ namespace TictactoeServer
 
         public void EndClientSocket()
         {
+            IsRunning = false;
             myClientSocket.Close();
             ClientList.Remove(this);
         }

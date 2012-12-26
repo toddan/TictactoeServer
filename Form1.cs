@@ -27,7 +27,6 @@ namespace TictactoeServer
     public partial class Form1 : Form
     {
         GameServer myGameServer = new GameServer("127.0.0.1",8888);
-        public static ListBox ClientListref = null;
 
         public Form1()
         {
@@ -37,11 +36,27 @@ namespace TictactoeServer
         private void button1_Click(object sender, EventArgs e)
         {
             myGameServer.StartServer();
+            label1.BackColor = Color.Green;
+            label1.Text = "Online!";
         }
 
         private void button2_Click(object sender, EventArgs e)
         {
+            myGameServer.StopServer();
+            label1.BackColor = Color.Red;
+            label1.Text = "Offline!";
+        }
 
+        private void Form1_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (myGameServer.IsRunning)
+            {
+                myGameServer.StopServer();
+            }
+            else
+            {
+                this.Dispose();
+            }
         }
     }
 }
